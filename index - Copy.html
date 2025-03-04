@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Charts Dashboard</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://d3js.org/d3.v6.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+      }
+      .container {
+        display: grid;
+        gap: 20px;
+        padding: 20px;
+      }
+      .chart-container {
+        display: flex;
+        justify-content: center;
+        flex-direction: column;
+        align-items: center;
+        background: #fff;
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      }
+      .chart-title {
+        text-align: center;
+        font-size: 18px;
+        margin-bottom: 10px;
+      }
+
+      @media (min-width: 768px) {
+        .container {
+          grid-template-columns: repeat(2, 1fr);
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <!-- Bar Chart (Chart.js) -->
+      <div class="chart-container">
+        <div class="chart-title">Sales Revenue (Chart.js - Bar Chart)</div>
+        <canvas id="barChart"></canvas>
+      </div>
+
+      <!-- Pie Chart (D3.js) -->
+      <div class="chart-container">
+        <div class="chart-title">Market Share (D3.js - Pie Chart)</div>
+        <svg id="pieChart" width="300" height="300"></svg>
+      </div>
+
+      <!-- Radar Chart (ApexCharts) -->
+      <div class="chart-container">
+        <div class="chart-title">
+          Product Performance (ApexCharts - Radar Chart)
+        </div>
+        <div id="radarChart"></div>
+      </div>
+    </div>
+
+    <script>
+      // Bar Chart (Chart.js)
+      const ctx = document.getElementById("barChart").getContext("2d");
+      new Chart(ctx, {
+        type: "bar",
+        data: {
+          labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun"],
+          datasets: [
+            {
+              label: "Revenue ($)",
+              data: [5000, 10000, 7500, 12000, 15000, 11000],
+              backgroundColor: "rgba(75, 192, 192, 0.6)",
+              borderColor: "rgba(75, 192, 192, 1)",
+              borderWidth: 1,
+            },
+          ],
+        },
+        options: { responsive: true },
+      });
+
+      // Pie Chart (D3.js)
+      const data = [
+        { label: "Product A", value: 30 },
+        { label: "Product B", value: 20 },
+        { label: "Product C", value: 50 },
+      ];
+      const colors = d3.scaleOrdinal(d3.schemeCategory10);
+      const pie = d3.pie().value((d) => d.value);
+      const arc = d3.arc().innerRadius(0).outerRadius(100);
+      d3.select("#pieChart")
+        .append("g")
+        .attr("transform", "translate(150,150)")
+        .selectAll("path")
+        .data(pie(data))
+        .enter()
+        .append("path")
+        .attr("d", arc)
+        .attr("fill", (d, i) => colors(i));
+
+      // Radar Chart (ApexCharts)
+      var options = {
+        series: [
+          {
+            name: "Product A",
+            data: [80, 90, 70, 85, 95],
+          },
+          {
+            name: "Product B",
+            data: [60, 75, 85, 70, 80],
+          },
+        ],
+        chart: { type: "radar", height: 300 },
+        xaxis: {
+          categories: [
+            "Speed",
+            "Quality",
+            "Usability",
+            "Durability",
+            "Affordability",
+          ],
+        },
+      };
+      new ApexCharts(document.querySelector("#radarChart"), options).render();
+    </script>
+  </body>
+</html>
