@@ -1089,12 +1089,12 @@ section {
 }
 
 .portfolio .portfolio-wrap .portfolio-info h4 a {
-  color: var(--color-default);
+  color: var(--color-primary);
   transition: 0.3s;
 }
 
 .portfolio .portfolio-wrap .portfolio-info h4 a:hover {
-  color: var(--color-primary);
+  color: var(--color-default);
 }
 
 .portfolio .portfolio-wrap .portfolio-info p {
